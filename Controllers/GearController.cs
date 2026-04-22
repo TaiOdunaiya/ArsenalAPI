@@ -33,6 +33,7 @@ public class GearController : ControllerBase
                 DivisionId = g.DivisionId,
                 DivisionName = g.Division.Name,
                 Quantity = g.Quantity,
+                TargetQuantity = g.TargetQuantity,
                 Notes = g.Notes,
                 CreatedAt = g.CreatedAt,
                 UpdatedAt = g.UpdatedAt
@@ -55,6 +56,7 @@ public class GearController : ControllerBase
                 DivisionId = g.DivisionId,
                 DivisionName = g.Division.Name,
                 Quantity = g.Quantity,
+                TargetQuantity = g.TargetQuantity,
                 Notes = g.Notes,
                 CreatedAt = g.CreatedAt,
                 UpdatedAt = g.UpdatedAt
@@ -76,6 +78,7 @@ public class GearController : ControllerBase
             Name = dto.Name,
             DivisionId = dto.DivisionId,
             Quantity = dto.Quantity,
+            TargetQuantity = dto.TargetQuantity,
             Notes = dto.Notes,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
@@ -91,6 +94,7 @@ public class GearController : ControllerBase
             DivisionId = item.DivisionId,
             DivisionName = division.Name,
             Quantity = item.Quantity,
+            TargetQuantity = item.TargetQuantity,
             Notes = item.Notes,
             CreatedAt = item.CreatedAt,
             UpdatedAt = item.UpdatedAt
@@ -111,6 +115,7 @@ public class GearController : ControllerBase
         item.Name = dto.Name;
         item.DivisionId = dto.DivisionId;
         item.Quantity = dto.Quantity;
+        item.TargetQuantity = dto.TargetQuantity;
         item.Notes = dto.Notes;
         item.UpdatedAt = DateTime.UtcNow;
 

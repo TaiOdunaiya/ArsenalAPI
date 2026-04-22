@@ -60,6 +60,7 @@ public class GearControllerTests
         var dto = Assert.IsType<GearItemDto>(ok.Value);
         Assert.Equal("Batarangs", dto.Name);
         Assert.Equal("Gadgets", dto.DivisionName);
+        Assert.Equal(20, dto.TargetQuantity);
     }
 
     [Fact]
@@ -84,6 +85,7 @@ public class GearControllerTests
             Name = "Test Gadget",
             DivisionId = 1,
             Quantity = 10,
+            TargetQuantity = 20,
             Notes = "unit test"
         };
 
@@ -94,11 +96,13 @@ public class GearControllerTests
         var response = Assert.IsType<GearItemDto>(created.Value);
         Assert.Equal("Test Gadget", response.Name);
         Assert.Equal("Gadgets", response.DivisionName);
+        Assert.Equal(20, response.TargetQuantity);
         Assert.True(response.Id > 0);
 
         var persisted = await context.GearItems.FindAsync(response.Id);
         Assert.NotNull(persisted);
         Assert.Equal("Test Gadget", persisted!.Name);
+        Assert.Equal(20, persisted.TargetQuantity);
     }
 
     [Fact]
@@ -111,13 +115,40 @@ public class GearControllerTests
         {
             Name = "X",
             DivisionId = 999,
-            Quantity = 1
+            Quantity = 1,
+            TargetQuantity = 5
         };
 
         var result = await controller.CreateGear(dto);
 
         var bad = Assert.IsType<BadRequestObjectResult>(result);
         Assert.Equal("Invalid DivisionId", bad.Value);
+    }
+
+    [Fact]
+    public async Task CreateGear_TargetQuantity_RoundTrip()
+    {
+        await using var context = TestDbContextFactory.Create();
+        var controller = new GearController(context);
+
+        var createDto = new CreateGearItemDto
+        {
+            Name = "Smoke Pellets",
+            DivisionId = 1,
+            Quantity = 5,
+            TargetQuantity = 25
+        };
+
+        var createResult = await controller.CreateGear(createDto);
+        var created = Assert.IsType<CreatedAtActionResult>(createResult);
+        var createdDto = Assert.IsType<GearItemDto>(created.Value);
+
+        var getResult = await controller.GetGearItem(createdDto.Id);
+        var ok = Assert.IsType<OkObjectResult>(getResult);
+        var fetched = Assert.IsType<GearItemDto>(ok.Value);
+
+        Assert.Equal(25, fetched.TargetQuantity);
+        Assert.Equal(5, fetched.Quantity);
     }
 
     [Fact]
@@ -131,6 +162,7 @@ public class GearControllerTests
             Name = "Updated Name",
             DivisionId = 2,
             Quantity = 99,
+            TargetQuantity = 50,
             Notes = "updated"
         };
 
@@ -142,6 +174,7 @@ public class GearControllerTests
         Assert.Equal("Updated Name", item!.Name);
         Assert.Equal(2, item.DivisionId);
         Assert.Equal(99, item.Quantity);
+        Assert.Equal(50, item.TargetQuantity);
     }
 
     [Fact]
@@ -150,7 +183,7 @@ public class GearControllerTests
         await using var context = TestDbContextFactory.Create();
         var controller = new GearController(context);
 
-        var dto = new UpdateGearItemDto { Name = "N", DivisionId = 1, Quantity = 1 };
+        var dto = new UpdateGearItemDto { Name = "N", DivisionId = 1, Quantity = 1, TargetQuantity = 5 };
 
         var result = await controller.UpdateGear(99999, dto);
 
@@ -163,7 +196,7 @@ public class GearControllerTests
         await using var context = TestDbContextFactory.Create();
         var controller = new GearController(context);
 
-        var dto = new UpdateGearItemDto { Name = "N", DivisionId = 999, Quantity = 1 };
+        var dto = new UpdateGearItemDto { Name = "N", DivisionId = 999, Quantity = 1, TargetQuantity = 5 };
 
         var result = await controller.UpdateGear(1, dto);
 

@@ -7,6 +7,7 @@ public class GearItemDto
     public int DivisionId { get; set; }
     public string DivisionName { get; set; } = "";
     public int Quantity { get; set; }
+    public int TargetQuantity { get; set; }
     public string? Notes { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }

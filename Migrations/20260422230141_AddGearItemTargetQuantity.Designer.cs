@@ -3,6 +3,7 @@ using System;
 using ArsenalApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ArsenalApi.Migrations
 {
     [DbContext(typeof(ArsenalDbContext))]
-    partial class ArsenalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260422230141_AddGearItemTargetQuantity")]
+    partial class AddGearItemTargetQuantity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
